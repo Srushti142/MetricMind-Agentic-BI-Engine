@@ -40,4 +40,4 @@ Analyzed data, cleaned up, data modelling is been carried out, and working on re
 
 The following ER diagram illustrates the relationships between the Olist Brazilian E-Commerce dataset tables.
 
-![ER Diagram](docs/ER_Diagram.png)
+![ER Diagram](ER_Diagram.png)
