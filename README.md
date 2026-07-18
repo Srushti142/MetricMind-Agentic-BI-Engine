@@ -14,3 +14,15 @@ https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce
 
 ## Status
 Project initialized.
+
+
+## Project Workflow
+
+1. Data Collection
+2. Data Cleaning
+3. Data Modeling
+4. SQL Query Processing
+5. Business Insights
+6. Dashboard Development
+
+Analyzed data, cleaned up, data modelling is been carried out, and working on requirements.
