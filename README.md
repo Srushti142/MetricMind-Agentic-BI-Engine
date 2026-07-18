@@ -3,6 +3,14 @@
 ## Project Description
 This project aims to build an Agentic Semantic BI Engine that enables users to ask business questions in natural language and receive trusted, governed analytical insights.
 
+## Team Members
+Shreeya Balakrishna Naik
+Sunayana A Channagiri
+Navami NE
+Pogakula Sai Akash
+Srushti Angadi
+P PAVITHRA
+
 ## Dataset
 
 Olist Brazilian E-Commerce Dataset:
