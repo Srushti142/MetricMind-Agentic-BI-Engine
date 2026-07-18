@@ -38,4 +38,6 @@ Analyzed data, cleaned up, data modelling is been carried out, and working on re
 
 ## Entity Relationship Diagram
 
-[ER Diagram](docs/ER_Diagram.png)
+The following ER diagram illustrates the relationships between the Olist Brazilian E-Commerce dataset tables.
+
+![ER Diagram](docs/ER_Diagram.png)
