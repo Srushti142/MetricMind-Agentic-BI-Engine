@@ -34,3 +34,8 @@ Project initialized.
 6. Dashboard Development
 
 Analyzed data, cleaned up, data modelling is been carried out, and working on requirements.
+
+
+## Entity Relationship Diagram
+
+[ER Diagram](docs/ER_Diagram.png)
