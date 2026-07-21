@@ -45,3 +45,9 @@ The following ER diagram illustrates the relationships between the Olist Brazili
 
 Project updated on 20 July 2026.
 
+## Project Progress - July 21, 2026
+
+- Created Snowflake stage.
+- Uploaded Olist dataset files.
+- Continued Snowflake project setup.
+
