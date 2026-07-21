@@ -51,3 +51,20 @@ Project updated on 20 July 2026.
 - Uploaded Olist dataset files.
 - Continued Snowflake project setup.
 
+
+
+## Progress Update
+
+Completed:
+- Snowflake environment setup
+- Created OLIST_DB and RAW schema
+- Created OLIST_STAGE
+- Uploaded 9 Olist dataset CSV files
+- Created CSV file format
+- Loaded customers, orders, order_items, order_payments, order_review, products, sellers, geolocation, and product_category_translation tables into Snowflake
+
+Next Steps:
+- Install dbt
+- Create staging models
+- Build star schema
+
