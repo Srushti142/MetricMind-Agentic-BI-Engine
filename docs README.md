@@ -1,17 +1,23 @@
 # Documentation
 
 Project documentation will be added here.
+
 # Project Plan
 
 ## Phase 1
-- Dataset Collection
-- Data Cleaning
+
+* Dataset Collection
+* Data Cleaning
 
 ## Phase 2
-- Analysis
+
+* Analysis
 
 ## Phase 3
-- Dashboard
+
+* Dashboard
 
 ## Phase 4
-- Final Report
+
+* Final Report
+
