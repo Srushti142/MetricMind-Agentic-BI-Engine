@@ -68,3 +68,8 @@ Next Steps:
 - Create staging models
 - Build star schema
 
+
+## project progress
+built star schema and created staging models
+
+
