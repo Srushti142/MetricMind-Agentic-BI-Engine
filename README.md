@@ -72,4 +72,6 @@ Next Steps:
 ## project progress
 built star schema and created staging models
 
+Update dbt models and project documentation
+
 
