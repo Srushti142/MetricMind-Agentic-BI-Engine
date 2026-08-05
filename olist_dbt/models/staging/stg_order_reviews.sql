@@ -6,4 +6,4 @@ select
     review_comment_message,
     review_creation_date,
     review_answer_timestamp
-from {{ source('raw', 'ORDER_REVIEWS') }}
+from {{ source('raw', 'ORDER_REVIEW') }}
