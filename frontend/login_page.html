@@ -1,0 +1,44 @@
+// app/(auth)/login/page.tsx
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
+
+export default function LoginPage() {
+  return (
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+      <div className="w-full max-w-md space-y-8">
+        <div className="text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-2xl text-white mb-4">
+            <span className="text-2xl font-bold">M</span>
+          </div>
+          <h1 className="text-3xl font-bold text-slate-900">MetricMind</h1>
+          <p className="text-slate-500 mt-2">Agentic Semantic BI Engine</p>
+        </div>
+
+        <Card className="p-8 border-none shadow-xl bg-white/80 backdrop-blur-md">
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-slate-700">Email Address</label>
+              <Input type="email" placeholder="name@company.com" className="h-12 border-slate-200" />
+            </div>
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <label className="text-sm font-medium text-slate-700">Password</label>
+                <a href="#" className="text-sm text-blue-600 hover:underline">Forgot?</a>
+              </div>
+              <Input type="password" placeholder="••••••••" className="h-12 border-slate-200" />
+            </div>
+            <Button className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-lg font-semibold transition-all transform active:scale-95">
+              Sign In
+            </Button>
+          </div>
+
+          <div className="mt-6 flex items-center gap-2">
+            <input type="checkbox" className="rounded border-slate-300 text-blue-600 focus:ring-blue-500" />
+            <label className="text-sm text-slate-600">Remember this device for 30 days</label>
+          </div>
+        </Card>
+      </div>
+    </div>
+  );
+}
