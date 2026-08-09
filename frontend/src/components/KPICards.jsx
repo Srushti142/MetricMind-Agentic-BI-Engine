@@ -10,12 +10,18 @@ function KPICards() {
 
   useEffect(() => {
     fetch("http://localhost:5000/api/kpis")
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch KPI data");
+        }
+        return response.json();
+      })
       .then((result) => {
+        console.log("KPI data received:", result);
         setData(result);
       })
       .catch((error) => {
-        console.error("Error fetching KPI data:", error);
+        console.error("KPI API Error:", error);
       });
   }, []);
 
@@ -24,22 +30,30 @@ function KPICards() {
 
       <div className="card">
         <h3>Total Sales</h3>
-        <p>₹{data.totalSales.toLocaleString("en-IN")}</p>
+        <p>
+          ₹{Number(data.totalSales).toLocaleString("en-IN")}
+        </p>
       </div>
 
       <div className="card">
         <h3>Total Orders</h3>
-        <p>{data.totalOrders.toLocaleString("en-IN")}</p>
+        <p>
+          {Number(data.totalOrders).toLocaleString("en-IN")}
+        </p>
       </div>
 
       <div className="card">
         <h3>Customers</h3>
-        <p>{data.customers.toLocaleString("en-IN")}</p>
+        <p>
+          {Number(data.customers).toLocaleString("en-IN")}
+        </p>
       </div>
 
       <div className="card">
         <h3>Revenue</h3>
-        <p>₹{(data.revenue / 100000).toFixed(1)} Lakhs</p>
+        <p>
+          ₹{(Number(data.revenue) / 100000).toFixed(1)} Lakhs
+        </p>
       </div>
 
     </div>
