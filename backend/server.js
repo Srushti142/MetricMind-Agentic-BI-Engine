@@ -51,20 +51,64 @@ app.get("/", (req, res) => {
 
 // KPIs
 app.get("/api/kpis", (req, res) => {
+  const { state = "All States", payment = "All Payment Types" } = req.query;
+
+  let filteredOrders = orders;
+
+  // Filter by state
+  if (state !== "All States") {
+    const stateCustomers = new Set(
+      customers
+        .filter((customer) => customer.customer_state === state)
+        .map((customer) => customer.customer_id)
+    );
+
+    filteredOrders = orders.filter((order) =>
+      stateCustomers.has(order.customer_id)
+    );
+  }
+
+  // Get order IDs after state filtering
+  const filteredOrderIds = new Set(
+    filteredOrders.map((order) => order.order_id)
+  );
+
+  // Filter payments
+  let filteredPayments = payments.filter((payment) =>
+    filteredOrderIds.has(payment.order_id)
+  );
+
+  if (payment !== "All Payment Types") {
+    const paymentMap = {
+      "Credit Card": "credit_card",
+      "Debit Card": "debit_card",
+      "Voucher": "voucher",
+      "Boleto": "boleto",
+    };
+
+    const paymentType = paymentMap[payment];
+
+    if (paymentType) {
+      filteredPayments = filteredPayments.filter(
+        (item) => item.payment_type === paymentType
+      );
+    }
+  }
+
   const totalOrders = new Set(
-    orders.map((order) => order.order_id)
+    filteredPayments.map((payment) => payment.order_id)
   ).size;
 
   const totalCustomers = new Set(
-    customers.map((customer) => customer.customer_unique_id)
+    filteredOrders.map((order) => order.customer_id)
   ).size;
 
-  const totalSales = payments.reduce(
+  const totalSales = filteredPayments.reduce(
     (sum, payment) => sum + Number(payment.payment_value || 0),
     0
   );
 
-  const deliveredOrders = orders.filter(
+  const deliveredOrders = filteredOrders.filter(
     (order) => order.order_status === "delivered"
   ).length;
 
@@ -79,10 +123,56 @@ app.get("/api/kpis", (req, res) => {
 
 // SALES
 app.get("/api/sales", (req, res) => {
+  const {
+    state = "All States",
+    payment = "All Payment Types",
+  } = req.query;
+
+  let filteredOrders = orders;
+
+  // Filter by state
+  if (state !== "All States") {
+    const stateCustomers = new Set(
+      customers
+        .filter((customer) => customer.customer_state === state)
+        .map((customer) => customer.customer_id)
+    );
+
+    filteredOrders = orders.filter((order) =>
+      stateCustomers.has(order.customer_id)
+    );
+  }
+
+  const filteredOrderIds = new Set(
+    filteredOrders.map((order) => order.order_id)
+  );
+
+  let filteredPayments = payments.filter((payment) =>
+    filteredOrderIds.has(payment.order_id)
+  );
+
+  // Filter by payment type
+  if (payment !== "All Payment Types") {
+    const paymentMap = {
+      "Credit Card": "credit_card",
+      "Debit Card": "debit_card",
+      "Voucher": "voucher",
+      "Boleto": "boleto",
+    };
+
+    const paymentType = paymentMap[payment];
+
+    if (paymentType) {
+      filteredPayments = filteredPayments.filter(
+        (item) => item.payment_type === paymentType
+      );
+    }
+  }
+
   const salesByMonth = {};
 
-  payments.forEach((payment) => {
-    const order = orders.find(
+  filteredPayments.forEach((payment) => {
+    const order = filteredOrders.find(
       (item) => item.order_id === payment.order_id
     );
 
@@ -128,14 +218,62 @@ app.get("/api/sales", (req, res) => {
 
 // ORDER STATUS
 app.get("/api/order-status", (req, res) => {
+  const {
+    state = "All States",
+    payment = "All Payment Types",
+  } = req.query;
+
+  let filteredOrders = orders;
+
+  // Filter by state
+  if (state !== "All States") {
+    const stateCustomers = new Set(
+      customers
+        .filter((customer) => customer.customer_state === state)
+        .map((customer) => customer.customer_id)
+    );
+
+    filteredOrders = orders.filter((order) =>
+      stateCustomers.has(order.customer_id)
+    );
+  }
+
+  const filteredOrderIds = new Set(
+    filteredOrders.map((order) => order.order_id)
+  );
+
+  // Payment filter
+  if (payment !== "All Payment Types") {
+    const paymentMap = {
+      "Credit Card": "credit_card",
+      "Debit Card": "debit_card",
+      "Voucher": "voucher",
+      "Boleto": "boleto",
+    };
+
+    const paymentType = paymentMap[payment];
+
+    if (paymentType) {
+      const paymentOrderIds = new Set(
+        payments
+          .filter((item) => item.payment_type === paymentType)
+          .map((item) => item.order_id)
+      );
+
+      filteredOrders = filteredOrders.filter((order) =>
+        paymentOrderIds.has(order.order_id)
+      );
+    }
+  }
+
   const counts = {};
 
-  orders.forEach((order) => {
+  filteredOrders.forEach((order) => {
     const status = order.order_status || "unknown";
     counts[status] = (counts[status] || 0) + 1;
   });
 
-  const total = orders.length;
+  const total = filteredOrders.length;
 
   const result = Object.entries(counts)
     .sort((a, b) => b[1] - a[1])
@@ -144,8 +282,10 @@ app.get("/api/order-status", (req, res) => {
       name: name
         .replace(/_/g, " ")
         .replace(/\b\w/g, (c) => c.toUpperCase()),
-      value: Number(((count / total) * 100).toFixed(2)),
-      count: count,
+      value: total
+        ? Number(((count / total) * 100).toFixed(2))
+        : 0,
+      count,
     }));
 
   res.json(result);

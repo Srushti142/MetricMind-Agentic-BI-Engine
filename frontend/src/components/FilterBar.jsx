@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function FilterBar() {
+function FilterBar({ onApply }) {
   const [filters, setFilters] = useState({
     period: "Last 6 Months",
     state: "All States",
@@ -17,19 +17,29 @@ function FilterBar() {
   };
 
   const resetFilters = () => {
-    setFilters({
+    const defaultFilters = {
       period: "Last 6 Months",
       state: "All States",
       payment: "All Payment Types",
-    });
+    };
+
+    setFilters(defaultFilters);
+
+    if (onApply) {
+      onApply(defaultFilters);
+    }
   };
 
   const applyFilters = () => {
     console.log("Applied filters:", filters);
+
+    if (onApply) {
+      onApply(filters);
+    }
   };
 
   return (
-    <div className="filter-card">
+    <div className="filter-bar">
 
       <div className="filter-title">
         <div>
@@ -84,7 +94,7 @@ function FilterBar() {
             <option>Debit Card</option>
             <option>Voucher</option>
             <option>Boleto</option>
-        </select>
+          </select>
         </div>
 
         <div className="filter-buttons">
@@ -101,7 +111,6 @@ function FilterBar() {
         </div>
 
       </div>
-
     </div>
   );
 }

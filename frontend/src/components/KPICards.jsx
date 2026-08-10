@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-function KPICards() {
+function KPICards({ filters }) {
   const [data, setData] = useState({
     totalSales: 0,
     totalOrders: 0,
@@ -9,7 +9,12 @@ function KPICards() {
   });
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/kpis")
+    const params = new URLSearchParams({
+  state: filters.state,
+  payment: filters.payment,
+});
+
+fetch(`http://localhost:5000/api/kpis?${params}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch KPI data");
@@ -23,10 +28,10 @@ function KPICards() {
       .catch((error) => {
         console.error("KPI API Error:", error);
       });
-  }, []);
+  }, [filters]);
 
   return (
-    <div className="cards">
+    <div className="kpi-grid">
 
       <div className="card">
         <h3>Total Sales</h3>
