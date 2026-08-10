@@ -1,0 +1,37 @@
+// components/charts/ProfitHeatmap.tsx
+"use client";
+import EChartBase from './EChartBase';
+
+const hours = ['12a', '1a', '2a', '3a', '4a', '5a', '6a', '7a', '8a', '9a', '10a', '11a'];
+const days = ['Sat', 'Fri', 'Thu', 'Wed', 'Tue', 'Mon', 'Sun'];
+
+const option = {
+  tooltip: { position: 'top' },
+  grid: { height: '70%', top: '10%' },
+  xAxis: { type: 'category', data: hours, splitArea: { show: true } },
+  yAxis: { type: 'category', data: days, splitArea: { show: true } },
+  visualMap: {
+    min: 0,
+    max: 10,
+    calculable: true,
+    orient: 'horizontal',
+    left: 'center',
+    bottom: '0%',
+    inRange: { colors: ['#E0F2FE', '#2563EB'] }
+  },
+  series: [{
+    name: 'Profit Density',
+    type: 'heatmap',
+    data: [[0,0,5],[0,1,1],[0,2,0],[0,3,10],[1,0,3], /* ... more data */],
+    label: { show: false }
+  }]
+};
+
+export default function ProfitHeatmap() {
+  return (
+    <div className="bg-white p-6 rounded-xl border shadow-sm">
+      <h3 className="text-lg font-semibold mb-4">Profit Density Heatmap</h3>
+      <EChartBase option={option} />
+    </div>
+  );
+}
