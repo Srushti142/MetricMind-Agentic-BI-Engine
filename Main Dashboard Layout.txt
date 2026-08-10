@@ -1,0 +1,56 @@
+// components/layout/DashboardShell.tsx
+"use client";
+import { LayoutDashboard, MessageSquare, BarChart2, FileText, Settings, Bell, Search, User } from 'lucide-react';
+import Link from 'next/link';
+
+export default function DashboardShell({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex h-screen bg-[#F8FAFC]">
+      {/* Sidebar */}
+      <aside className="w-64 bg-[#0F172A] text-white flex flex-col">
+        <div className="p-6 text-xl font-bold border-b border-slate-800 flex items-center gap-2">
+          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">M</div>
+          MetricMind
+        </div>
+        <nav className="flex-1 p-4 space-y-2 mt-4">
+          <SidebarItem icon={<LayoutDashboard size={20} />} label="Dashboard" active />
+          <SidebarItem icon={<MessageSquare size={20} />} label="Chat BI" />
+          <SidebarItem icon={<BarChart2 size={20} />} label="Metrics" />
+          <SidebarItem icon={<FileText size={20} />} label="Reports" />
+          <div className="pt-4 mt-4 border-t border-slate-800">
+            <SidebarItem icon={<Settings size={20} />} label="Settings" />
+          </div>
+        </nav>
+      </aside>
+
+      {/* Main Content */}
+      <main className="flex-1 flex flex-col overflow-hidden">
+        {/* Top Nav */}
+        <header className="h-16 bg-white border-b px-8 flex items-center justify-between">
+          <div className="relative w-96">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+            <input className="w-full bg-slate-100 rounded-md py-2 pl-10 text-sm focus:outline-none" placeholder="Search metrics..." />
+          </div>
+          <div className="flex items-center gap-4">
+            <Bell size={20} className="text-slate-500 cursor-pointer" />
+            <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">JD</div>
+          </div>
+        </header>
+
+        {/* Viewport */}
+        <div className="flex-1 overflow-y-auto p-8">
+          {children}
+        </div>
+      </main>
+    </div>
+  );
+}
+
+function SidebarItem({ icon, label, active = false }: any) {
+  return (
+    <div className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors ${active ? 'bg-blue-600 text-white' : 'text-slate-400 hover:bg-slate-800'}`}>
+      {icon}
+      <span className="font-medium text-sm">{label}</span>
+    </div>
+  );
+}
