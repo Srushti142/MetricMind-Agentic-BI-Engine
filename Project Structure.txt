@@ -1,0 +1,28 @@
+metric-mind/
+├── app/
+│   ├── (auth)/login/page.tsx
+│   ├── (dashboard)/layout.tsx
+│   ├── (dashboard)/page.tsx
+│   ├── (dashboard)/chat/page.tsx
+│   └── layout.tsx
+├── components/
+│   ├── charts/
+│   │   ├── EChartBase.tsx
+│   │   ├── RevenueWaterfall.tsx
+│   │   └── ProfitHeatmap.tsx
+│   ├── chat/
+│   │   ├── ChatInterface.tsx
+│   │   └── SuggestedQuestions.tsx
+│   ├── dashboard/
+│   │   ├── KPISection.tsx
+│   │   └── FilterBar.tsx
+│   └── layout/
+│       ├── Sidebar.tsx
+│       └── TopNav.tsx
+├── hooks/
+│   └── use-metrics.ts
+├── lib/
+│   ├── echarts-config.ts
+│   └── utils.ts
+└── types/
+    └── index.ts
