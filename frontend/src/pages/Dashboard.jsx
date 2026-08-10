@@ -6,6 +6,8 @@ import KPICards from "../components/KPICards";
 import FilterBar from "../components/FilterBar";
 import SalesOverview from "../components/SalesOverview";
 import OrderStatus from "../components/OrderStatus";
+import PaymentAnalysis from "../components/PaymentAnalysis";
+import ReviewAnalysis from "../components/ReviewAnalysis";
 
 function Dashboard() {
   const [filters, setFilters] = useState({
@@ -37,6 +39,10 @@ function Dashboard() {
             <SalesOverview filters={filters} />
 
             <OrderStatus filters={filters} />
+
+            <PaymentAnalysis filters={filters} />
+
+            <ReviewAnalysis filters={filters} />
 
           </div>
 

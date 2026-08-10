@@ -6,33 +6,87 @@ function KPICards({ filters }) {
     totalOrders: 0,
     customers: 0,
     revenue: 0,
+    deliveredOrders: 0,
   });
 
-  useEffect(() => {
-    const params = new URLSearchParams({
-  state: filters.state,
-  payment: filters.payment,
-});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-fetch(`http://localhost:5000/api/kpis?${params}`)
-      .then((response) => {
+  useEffect(() => {
+    const fetchKPIs = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const params = new URLSearchParams({
+          state: filters?.state || "All States",
+          payment: filters?.payment || "All Payment Types",
+          period: filters?.period || "Last 6 Months",
+        });
+
+        const response = await fetch(
+          `http://localhost:5000/api/kpis?${params.toString()}`
+        );
+
         if (!response.ok) {
           throw new Error("Failed to fetch KPI data");
         }
-        return response.json();
-      })
-      .then((result) => {
+
+        const result = await response.json();
+
         console.log("KPI data received:", result);
+
         setData(result);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("KPI API Error:", error);
-      });
+        setError("Unable to load KPI data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchKPIs();
   }, [filters]);
 
-  return (
-    <div className="kpi-grid">
+  if (loading) {
+    return (
+      <div className="kpi-container">
+        <div className="card">
+          <h3>Total Sales</h3>
+          <p>Loading...</p>
+        </div>
 
+        <div className="card">
+          <h3>Total Orders</h3>
+          <p>Loading...</p>
+        </div>
+
+        <div className="card">
+          <h3>Customers</h3>
+          <p>Loading...</p>
+        </div>
+
+        <div className="card">
+          <h3>Revenue</h3>
+          <p>Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="kpi-container">
+        <div className="card">
+          <h3>KPI Error</h3>
+          <p>{error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="kpi-container">
       <div className="card">
         <h3>Total Sales</h3>
         <p>
@@ -60,7 +114,6 @@ fetch(`http://localhost:5000/api/kpis?${params}`)
           ₹{(Number(data.revenue) / 100000).toFixed(1)} Lakhs
         </p>
       </div>
-
     </div>
   );
 }

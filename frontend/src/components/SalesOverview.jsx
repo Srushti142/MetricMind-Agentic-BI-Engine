@@ -3,29 +3,42 @@ import { useEffect, useState } from "react";
 function SalesOverview({ filters }) {
   const [sales, setSales] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    const params = new URLSearchParams({
-    state: filters.state,
-    payment: filters.payment,
-  });
+    const fetchSales = async () => {
+      try {
+        setLoading(true);
+        setError("");
 
-  fetch(`http://localhost:5000/api/sales?${params}`)
-      .then((response) => {
+        const params = new URLSearchParams({
+          state: filters?.state || "All States",
+          payment: filters?.payment || "All Payment Types",
+          period: filters?.period || "Last 6 Months",
+        });
+
+        const response = await fetch(
+          `http://localhost:5000/api/sales?${params.toString()}`
+        );
+
         if (!response.ok) {
           throw new Error("Sales API failed");
         }
-        return response.json();
-      })
-      .then((data) => {
+
+        const data = await response.json();
+
         console.log("SALES DATA:", data);
+
         setSales(data);
-        setLoading(false);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("SALES ERROR:", error);
+        setError("Unable to load sales data");
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchSales();
   }, [filters]);
 
   const maxSales =
@@ -34,22 +47,24 @@ function SalesOverview({ filters }) {
       : 1;
 
   return (
-    <div className="chart-card">
-      <div className="chart-header">
+    <div className="sales-overview">
+      <div className="sales-header">
         <div>
           <h2>Sales Overview</h2>
           <p>Monthly sales performance</p>
         </div>
 
-        <select>
-          <option>Last 12 Months</option>
-          <option>Last 6 Months</option>
+        <select defaultValue="12">
+          <option value="12">Last 12 Months</option>
+          <option value="6">Last 6 Months</option>
         </select>
       </div>
 
       <div className="sales-chart">
         {loading ? (
           <p>Loading sales...</p>
+        ) : error ? (
+          <p>{error}</p>
         ) : sales.length === 0 ? (
           <p>No sales data available</p>
         ) : (
@@ -59,7 +74,7 @@ function SalesOverview({ filters }) {
                 (Number(item.sales) / maxSales) * 100;
 
               return (
-                <div className="bar-column" key={index}>
+                <div className="bar-column" key={`${item.year}-${item.month}-${index}`}>
                   <div className="bar-value">
                     ₹{(Number(item.sales) / 100000).toFixed(1)}L
                   </div>
@@ -71,7 +86,7 @@ function SalesOverview({ filters }) {
                       title={`${item.month} ${item.year}: ₹${Number(
                         item.sales
                       ).toLocaleString("en-IN")}`}
-                    ></div>
+                    />
                   </div>
 
                   <span className="bar-label">

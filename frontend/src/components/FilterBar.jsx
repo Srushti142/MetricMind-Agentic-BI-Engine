@@ -39,7 +39,7 @@ function FilterBar({ onApply }) {
   };
 
   return (
-    <div className="filter-bar">
+    <div className="filter-card">
 
       <div className="filter-title">
         <div>
@@ -50,6 +50,7 @@ function FilterBar({ onApply }) {
 
       <div className="filter-controls">
 
+        {/* PERIOD */}
         <div className="filter-group">
           <label>Period</label>
 
@@ -59,11 +60,13 @@ function FilterBar({ onApply }) {
             onChange={handleChange}
           >
             <option>Last 6 Months</option>
+            <option>Last 12 Months</option>
             <option>This Year</option>
             <option>Last Year</option>
           </select>
         </div>
 
+        {/* STATE */}
         <div className="filter-group">
           <label>State</label>
 
@@ -73,14 +76,38 @@ function FilterBar({ onApply }) {
             onChange={handleChange}
           >
             <option>All States</option>
-            <option>SP</option>
-            <option>RJ</option>
-            <option>MG</option>
+
+            <option>AC</option>
+            <option>AL</option>
+            <option>AP</option>
+            <option>AM</option>
             <option>BA</option>
+            <option>CE</option>
+            <option>DF</option>
+            <option>ES</option>
+            <option>GO</option>
+            <option>MA</option>
+            <option>MT</option>
+            <option>MS</option>
+            <option>MG</option>
+            <option>PA</option>
+            <option>PB</option>
             <option>PR</option>
+            <option>PE</option>
+            <option>PI</option>
+            <option>RJ</option>
+            <option>RN</option>
+            <option>RS</option>
+            <option>RO</option>
+            <option>RR</option>
+            <option>SC</option>
+            <option>SP</option>
+            <option>SE</option>
+            <option>TO</option>
           </select>
         </div>
 
+        {/* PAYMENT TYPE */}
         <div className="filter-group">
           <label>Payment Type</label>
 
@@ -94,10 +121,12 @@ function FilterBar({ onApply }) {
             <option>Debit Card</option>
             <option>Voucher</option>
             <option>Boleto</option>
-          </select>
+        </select>
         </div>
 
+        {/* BUTTONS */}
         <div className="filter-buttons">
+
           <button onClick={applyFilters}>
             Apply Filters
           </button>
@@ -108,9 +137,11 @@ function FilterBar({ onApply }) {
           >
             Reset
           </button>
+
         </div>
 
       </div>
+
     </div>
   );
 }

@@ -3,42 +3,50 @@ import { useEffect, useState } from "react";
 function OrderStatus({ filters }) {
   const [orderStatus, setOrderStatus] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    const params = new URLSearchParams({
-    state: filters.state,
-    payment: filters.payment,
-  });
+    const fetchOrderStatus = async () => {
+      try {
+        setLoading(true);
+        setError("");
 
-  fetch(`http://localhost:5000/api/order-status?${params}`)
-      .then((response) => {
+        const params = new URLSearchParams({
+          state: filters?.state || "All States",
+          payment: filters?.payment || "All Payment Types",
+          period: filters?.period || "Last 6 Months",
+        });
+
+        const response = await fetch(
+          `http://localhost:5000/api/order-status?${params.toString()}`
+        );
+
         if (!response.ok) {
           throw new Error("Order status API failed");
         }
-        return response.json();
-      })
-      .then((data) => {
+
+        const data = await response.json();
+
         console.log("ORDER STATUS DATA:", data);
+
         setOrderStatus(data);
-        setLoading(false);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("ORDER STATUS ERROR:", error);
+        setError("Unable to load order status");
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchOrderStatus();
   }, [filters]);
 
   const delivered =
-    orderStatus.find((item) => item.name === "Delivered")
-      ?.value || 0;
-
-  const canceled =
-    orderStatus.find((item) => item.name === "Canceled")
-      ?.value || 0;
+    orderStatus.find((item) => item.name === "Delivered")?.value || 0;
 
   return (
-    <div className="chart-card">
-      <div className="chart-header">
+    <div className="order-status">
+      <div className="order-status-header">
         <div>
           <h2>Order Status</h2>
           <p>Current order distribution</p>
@@ -48,6 +56,8 @@ function OrderStatus({ filters }) {
       <div className="order-status-content">
         {loading ? (
           <p>Loading order status...</p>
+        ) : error ? (
+          <p>{error}</p>
         ) : orderStatus.length === 0 ? (
           <p>No order status data available</p>
         ) : (
@@ -69,14 +79,14 @@ function OrderStatus({ filters }) {
 
             <div className="status-list">
               {orderStatus.map((item, index) => (
-                <div className="status-item" key={index}>
+                <div className="status-item" key={item.name}>
                   <span
                     className="status-dot"
                     style={{
                       background:
                         index === 0 ? "#2563eb" : "#93c5fd",
                     }}
-                  ></span>
+                  />
 
                   <span className="status-name">
                     {item.name}
