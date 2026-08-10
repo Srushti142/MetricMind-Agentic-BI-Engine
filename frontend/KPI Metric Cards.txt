@@ -1,0 +1,25 @@
+// components/dashboard/KPISection.tsx
+import { Card, Metric, Text, Flex, BadgeDelta, Grid } from "@tremor/react";
+
+const categories = [
+  { title: "Total Revenue", metric: "$2,456,351", delta: "12.3%", status: "increase" },
+  { title: "Gross Margin", metric: "64.2%", delta: "0.5%", status: "moderateIncrease" },
+  { title: "Active Customers", metric: "14,350", delta: "8.1%", status: "increase" },
+  { title: "Churn Rate", metric: "2.1%", delta: "0.3%", status: "decrease" },
+];
+
+export default function KPISection() {
+  return (
+    <Grid numItemsSm={2} numItemsLg={4} className="gap-6">
+      {categories.map((item) => (
+        <Card key={item.title} decoration="top" decorationColor="blue">
+          <Text>{item.title}</Text>
+          <Flex justifyContent="start" alignItems="baseline" className="space-x-3">
+            <Metric>{item.metric}</Metric>
+            <BadgeDelta deltaType={item.status}>{item.delta}</BadgeDelta>
+          </Flex>
+        </Card>
+      ))}
+    </Grid>
+  );
+}
