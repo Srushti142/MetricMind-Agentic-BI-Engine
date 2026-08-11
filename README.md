@@ -75,3 +75,5 @@ built star schema and created staging models
 Update dbt models and project documentation
 
 
+## Project Status: Completed 
+MetricMind is a fully functional Agentic BI Dashboard with interactive analytics, AI-powered insights, and natural-language business queries.
