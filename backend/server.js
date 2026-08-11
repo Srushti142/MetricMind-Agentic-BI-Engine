@@ -794,6 +794,77 @@ app.post("/api/ask", (req, res) => {
   });
 });
 
+// ==============================
+// CUSTOMER ANALYSIS
+// ==============================
+
+app.get("/api/customers", (req, res) => {
+  const {
+    state = "All States",
+    period = "All Time",
+  } = req.query;
+
+  let filteredOrders = orders;
+
+  // Filter by state
+  if (state !== "All States") {
+    filteredOrders = filteredOrders.filter(
+      (order) =>
+        customerStateMap.get(order.customer_id) === state
+    );
+  }
+
+  // Filter by period
+  if (period !== "All Time") {
+    filteredOrders = filterOrdersByPeriod(
+      filteredOrders,
+      period
+    );
+  }
+
+  // Unique customers
+  const uniqueCustomers = new Set(
+    filteredOrders.map((order) => order.customer_id)
+  );
+
+  // Orders per customer
+  const ordersPerCustomer =
+    uniqueCustomers.size > 0
+      ? filteredOrders.length / uniqueCustomers.size
+      : 0;
+
+  // Customer state distribution
+  const stateCounts = {};
+
+  filteredOrders.forEach((order) => {
+    const customerState = customerStateMap.get(
+      order.customer_id
+    );
+
+    if (!customerState) return;
+
+    stateCounts[customerState] =
+      (stateCounts[customerState] || 0) + 1;
+  });
+
+  const stateDistribution = Object.entries(stateCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 10)
+    .map(([state, count]) => ({
+      state,
+      orders: count,
+    }));
+
+  res.json({
+    totalCustomers: uniqueCustomers.size,
+    totalOrders: filteredOrders.length,
+    ordersPerCustomer: Number(
+      ordersPerCustomer.toFixed(2)
+    ),
+    stateDistribution,
+  });
+});
+
 // SERVER
 app.listen(PORT, () => {
   console.log(
