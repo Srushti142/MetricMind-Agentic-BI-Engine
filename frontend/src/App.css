@@ -702,3 +702,123 @@ body {
   background: #2563eb;
   border-radius: 10px;
 }
+
+/* ==============================
+   SIDEBAR NAVIGATION
+================================ */
+
+.sidebar li {
+  cursor: pointer;
+  padding: 15px 10px;
+  margin: 5px 0;
+  border-radius: 8px;
+  transition: 0.2s;
+}
+
+.sidebar li:hover {
+  color: white;
+  background: #374151;
+}
+
+.sidebar li.active {
+  color: white;
+  background: #2563eb;
+}
+
+
+/* ==============================
+   ADDITIONAL PAGE CONTENT
+================================ */
+
+.page-content {
+  width: 100%;
+}
+
+.page-content h1 {
+  margin-bottom: 8px;
+  color: #1e293b;
+}
+
+.page-content > p {
+  color: #64748b;
+  margin-bottom: 25px;
+}
+
+
+/* ==============================
+   INFORMATION CARDS
+================================ */
+
+.info-card {
+  background: white;
+  padding: 25px;
+  margin-bottom: 20px;
+  border-radius: 14px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+}
+
+.info-card h2 {
+  margin-bottom: 10px;
+  color: #1e293b;
+}
+
+.info-card p {
+  color: #64748b;
+  line-height: 1.6;
+}
+
+/* ==============================
+   ASK METRICMIND
+================================ */
+
+.ask-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ask-container input {
+  width: 310px;
+  padding: 12px 15px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  outline: none;
+  font-size: 15px;
+}
+
+.ask-container input:focus {
+  border-color: #2563eb;
+}
+
+.ask-container button {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ask-container button:hover {
+  background: #1d4ed8;
+}
+
+.ask-answer {
+  margin: 20px 30px 0;
+  padding: 18px 22px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+}
+
+.ask-answer strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #2563eb;
+}
+
+.ask-answer p {
+  color: #374151;
+  line-height: 1.5;
+}

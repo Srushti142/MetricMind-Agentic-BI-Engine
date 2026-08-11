@@ -625,6 +625,175 @@ app.get("/api/reviews", (req, res) => {
   );
 });
 
+// ==============================
+// ASK METRICMIND
+// ==============================
+
+app.post("/api/ask", (req, res) => {
+  const question = (req.body.question || "").toLowerCase().trim();
+
+  if (!question) {
+    return res.json({
+      answer: "Please enter a question.",
+    });
+  }
+
+  const answers = [];
+
+  // ==============================
+  // DELIVERED ORDERS
+  // ==============================
+
+  if (
+    question.includes("delivered orders") ||
+    question.includes("how many orders were delivered") ||
+    question.includes("orders delivered") ||
+    question.includes("how many delivered")
+  ) {
+    const delivered = orders.filter(
+      (order) => order.order_status === "delivered"
+    ).length;
+
+    answers.push(
+      `📦 Delivered Orders: ${delivered.toLocaleString("en-IN")}`
+    );
+  }
+
+  // ==============================
+  // TOTAL ORDERS
+  // ==============================
+
+  if (
+    question.includes("total orders") ||
+    question.includes("number of orders") ||
+    question.includes("how many orders")
+  ) {
+    const totalOrders = orders.length;
+
+    answers.push(
+      `📦 Total Orders: ${totalOrders.toLocaleString("en-IN")}`
+    );
+  }
+
+  // ==============================
+  // CUSTOMERS
+  // ==============================
+
+  if (
+    question.includes("customers") ||
+    question.includes("how many customers") ||
+    question.includes("total customers")
+  ) {
+    const uniqueCustomers = new Set(
+      orders.map((order) => order.customer_id)
+    ).size;
+
+    answers.push(
+      `👥 Customers: ${uniqueCustomers.toLocaleString("en-IN")}`
+    );
+  }
+
+  // ==============================
+  // TOTAL REVENUE
+  // ==============================
+
+  if (
+    question.includes("revenue") ||
+    question.includes("total revenue") ||
+    question.includes("total sales")
+  ) {
+    const totalRevenue = payments.reduce(
+      (sum, payment) =>
+        sum + Number(payment.payment_value || 0),
+      0
+    );
+
+    answers.push(
+      `💰 Total Revenue: ₹${totalRevenue.toLocaleString(
+        "en-IN",
+        {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }
+      )}`
+    );
+  }
+
+  // ==============================
+  // PAYMENT METHOD
+  // ==============================
+
+  if (
+    question.includes("payment method") ||
+    question.includes("payment type") ||
+    question.includes("most used payment")
+  ) {
+    const paymentCounts = {};
+
+    payments.forEach((payment) => {
+      const type = payment.payment_type;
+
+      paymentCounts[type] =
+        (paymentCounts[type] || 0) + 1;
+    });
+
+    const mostUsed = Object.entries(paymentCounts)
+      .sort((a, b) => b[1] - a[1])[0];
+
+    if (mostUsed) {
+      const paymentName = mostUsed[0]
+        .replace(/_/g, " ")
+        .replace(/\b\w/g, (c) => c.toUpperCase());
+
+      answers.push(
+        `💳 Most Used Payment Method: ${paymentName} (${mostUsed[1].toLocaleString(
+          "en-IN"
+        )} transactions)`
+      );
+    }
+  }
+
+  // ==============================
+  // 5 STAR REVIEWS
+  // ==============================
+
+  if (
+    question.includes("5 star") ||
+    question.includes("5-star") ||
+    question.includes("review score 5")
+  ) {
+    const fiveStarReviews = reviews.filter(
+      (review) =>
+        Number(review.review_score) === 5
+    ).length;
+
+    answers.push(
+      `⭐ 5-Star Reviews: ${fiveStarReviews.toLocaleString(
+        "en-IN"
+      )}`
+    );
+  }
+
+  // ==============================
+  // NO MATCH
+  // ==============================
+
+  if (answers.length === 0) {
+    return res.json({
+      answer:
+        "I couldn't understand that question yet. Try asking about orders, delivered orders, customers, revenue, payment methods, or reviews.",
+    });
+  }
+
+  // ==============================
+  // FINAL RESPONSE
+  // ==============================
+
+  return res.json({
+    answer: answers.join("\n"),
+  });
+});
+
 // SERVER
 app.listen(PORT, () => {
   console.log(
